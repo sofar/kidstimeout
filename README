@@ -30,6 +30,9 @@ config.yml file in the plugins folder.
 For bugs, tips, donations please feel free to contact me:
     Auke Kok - auke@foo-projects.org
 
+The project code is hosted on my github page:
+    https://github.com/sofar/timeout
+
 The latest copy of the plugin can be found here:
     http://foo-projects.org/~sofar/timeout/timeout.jar
 
