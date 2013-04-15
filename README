@@ -1,0 +1,32 @@
+
+Timeout - a Bukkit plugin
+=========================
+
+timeout is a "kids time-out" plugin meant to keep your server
+"peaceful". It teleports players that kill peaceful entities to
+a "prison" or "time-out" location for a certain interval, and when
+the punishment is over, teleports them to a "release" location.
+
+The following mobs are considered "peaceful" for the purpose of
+this plugin:
+- pigs, sheep, cows, chickens
+- villagers, iron golems, snowmans
+- wolves, ocelots
+
+Damaging friendly mobs is still permitted and the plugin doesn't
+register it. You should probably create a jailbreak-proof holding
+cell or prison, or a deserted island, or a metal cage suspended
+above the fiery lava pits of the nether.
+
+The timeout location and release location can be set by visiting
+the location and typing /timeout and /release respectively. The
+plugin stores the world so you can have a timeout location in
+the nether and a release location in the normal world.
+
+The plugins also has a timeout duration setting that defaults to
+240 seconds. All settings can also be modified by editing the
+config.yml file in the plugins folder.
+
+For bugs, tips, donations please feel free to contact me:
+    Auke Kok - auke@foo-projects.org
+
