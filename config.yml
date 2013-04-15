@@ -1,0 +1,13 @@
+timeoutlocation:
+  ==: Vector
+  x: 0.0
+  y: 0.0
+  z: 0.0
+timeoutworld: world
+releaselocation:
+  ==: Vector
+  x: 0.0
+  y: 0.0
+  z: 0.0
+releaseworld: world
+timeoutlength: 240

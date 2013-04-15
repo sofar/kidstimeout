@@ -1,0 +1,10 @@
+name: timeout
+main: org.foo_projects.sofar.timeout.timeout
+version: 1
+commands:
+    timeout:
+        description: set the timeout location to the players current location
+        usage: /timeout
+    release:
+        description: set the release location to the players current location
+        usage: /release
