@@ -77,6 +77,14 @@ public final class KidsTimeout extends JavaPlugin {
 	}
 
 	public void doTimeout(final Player player) {
+		if ((timeoutLocation.getY() == 0) || (releaseLocation.getY() == 0)) {
+			// check if the plugin was configured
+			player.chat("You were caught red-handed! The authorities would like to");
+			player.chat("imprison you, but a prison was not yet built, so you are");
+			player.chat("free to go. You won't be so lucky the next time!");
+			return;
+		}
+		
 		player.chat("You've been caught in your crimes! A prison sentence was passed to you!");
 		player.chat("You have been teleported to prison");
 		player.teleport(timeoutLocation);
@@ -106,7 +114,6 @@ class KidsTimeoutEntityListener implements Listener {
 
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
-
 		Entity entity = event.getEntity();
 		if (!(entity instanceof Player)) {
 			if (entity.getLastDamageCause() instanceof EntityDamageByEntityEvent) {
@@ -124,7 +131,7 @@ class KidsTimeoutEntityListener implements Listener {
 					case VILLAGER:
 					case SNOWMAN:
 					case IRON_GOLEM:
-						 killer.chat(killer.getName() + " killed a friendly entity!");
+						 killer.chat(killer.getName() + " killed a " + entity.getType().getName() + "!");
 						 plugin.doTimeout(killer);
 						 return;
 					default:
