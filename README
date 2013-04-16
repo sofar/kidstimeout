@@ -1,8 +1,8 @@
 
-Timeout - a Bukkit plugin
+KidsTimeout - a Bukkit plugin
 =========================
 
-timeout is a "kids time-out" plugin meant to keep your server
+KidsTimeout is a "kids time-out" plugin meant to keep your server
 "peaceful". It teleports players that kill peaceful entities to
 a "prison" or "time-out" location for a certain interval, and when
 the punishment is over, teleports them to a "release" location.
@@ -31,8 +31,8 @@ For bugs, tips, donations please feel free to contact me:
     Auke Kok - auke@foo-projects.org
 
 The project code is hosted on my github page:
-    https://github.com/sofar/timeout
+    https://github.com/sofar/kidstimeout
 
 The latest copy of the plugin can be found here:
-    http://foo-projects.org/~sofar/timeout/timeout.jar
+    http://foo-projects.org/~sofar/kidstimeout/kidstimeout.jar
 

@@ -1,5 +1,5 @@
-name: timeout
-main: org.foo_projects.sofar.timeout.timeout
+name: KidsTimeout
+main: org.foo_projects.sofar.KidsTimeout.KidsTimeout
 version: 1
 commands:
     timeout:
