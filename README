@@ -2,9 +2,9 @@
 KidsTimeout - a Bukkit plugin
 =========================
 
-KidsTimeout is a "kids time-out" plugin meant to keep your server
-"peaceful". It teleports players that kill peaceful entities to
-a "prison" or "time-out" location for a certain interval, and when
+KidsTimeout is a "kids timeout" plugin meant to keep your server
+"peaceful". It teleports players that kills peaceful entities to
+a "prison" or "timeout" location for a certain interval, and when
 the punishment is over, teleports them to a "release" location.
 
 The following mobs are considered "peaceful" for the purpose of
@@ -23,22 +23,23 @@ The timeout location and release location can be set by visiting
 the location and typing /timeout and /release respectively. The
 plugin stores the world so you can have a timeout location in
 the nether and a release location in the normal world. The
-/timeoutlength option modifies the time-out length in seconds.
+/timeoutlength option modifies the timeout length in seconds,
+or shows it current value. The default timeout length is 240
+seconds.
 
 Players can also be put directly into timeout by passing the
 username to the /timeout option: "/timeout adam".
 
-Only players with the "kidsplugin" permission (op by default
+Only players with the "kidstimeout" permission (or op by default
 only) can change the settings or put another player in timeout.
+Players with op privileges or with the "kidstimeout" permission
+will never be put in a timeout.
 
 The plugin attempts to prevent players from teleporting out of
-the time-out location. This may interfere with other plugins
+the timeout location. This may interfere with other plugins
 that can teleport - it's behavior is undefined because other
 plugins can undo the restriction.
 
-The plugins also has a timeout duration setting that defaults to
-240 seconds. All settings can also be modified by editing the
-config.yml file in the plugins folder.
 
 For bugs, tips, donations please feel free to contact me:
     Auke Kok - auke@foo-projects.org
