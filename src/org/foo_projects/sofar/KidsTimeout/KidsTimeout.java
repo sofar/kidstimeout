@@ -206,16 +206,14 @@ class KidsTimeoutTimeoutLengthCommand implements CommandExecutor {
 	}
 	
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
-		if (split.length == 1) {
-			plugin.setTimeoutLength(Long.parseLong(split[0]));
-			sender.sendMessage("Time-out length is " + plugin.getConfig().getLong("timeoutlength") + " seconds");
-			return true;
-		} else if (split.length == 0) {
-			sender.sendMessage("Time-out length is " + plugin.getConfig().getLong("timeoutlength") + " seconds");
-			return true;
-		}
+		if (split.length > 1)
+			return false;
 		
-		return false;
+		if (split.length == 1)
+			plugin.setTimeoutLength(Long.parseLong(split[0]));
+
+		sender.sendMessage("Time-out length is " + plugin.getConfig().getLong("timeoutlength") + " seconds");
+		return true;
 	}
 }
 
