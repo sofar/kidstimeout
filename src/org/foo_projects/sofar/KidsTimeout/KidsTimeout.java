@@ -46,6 +46,7 @@ public final class KidsTimeout extends JavaPlugin {
 
 		getCommand("timeout").setExecutor(new KidsTimeoutTimeoutCommand(this));
 		getCommand("release").setExecutor(new KidsReleaseTimeoutCommand(this));
+		getCommand("timeoutlength").setExecutor(new KidsTimeoutTimeoutLengthCommand(this));
 
 		this.saveDefaultConfig();
 		world = this.getServer().getWorld(this.getConfig().getString("timeoutworld"));
@@ -62,7 +63,7 @@ public final class KidsTimeout extends JavaPlugin {
 	public void setTimeoutLocation(final Player player) {
 		Location location = player.getLocation();
 		timeoutLocation = location;
-		player.chat("timeout location set to: " + location.getX() + "," + location.getY() + "," + location.getZ());
+		player.sendMessage("timeout location set to: " + location.getX() + "," + location.getY() + "," + location.getZ());
 		Vector vector = location.toVector();
 		this.getConfig().set("timeoutlocation", vector);
 		this.getConfig().set("timeoutworld", location.getWorld().getName());
@@ -72,24 +73,32 @@ public final class KidsTimeout extends JavaPlugin {
 	public void setReleaseLocation(final Player player) {
 		Location location = player.getLocation();
 		releaseLocation = location;
-		player.chat("release location set to: " + location.getX() + "," + location.getY() + "," + location.getZ());
+		player.sendMessage("release location set to: " + location.getX() + "," + location.getY() + "," + location.getZ());
 		Vector vector = location.toVector();
 		this.getConfig().set("releaselocation", vector);
 		this.getConfig().set("releaseworld", location.getWorld().getName());
 		this.saveConfig();
 	}
 
+	public void setTimeoutLength(final long length) {
+		this.getConfig().set("timeoutlength", length);
+		this.saveConfig();
+	}
+
 	public void doTimeout(final Player player) {
+		if (player.hasPermission("kidstimeout") || player.isOp())
+			return;
+
 		if ((timeoutLocation.getY() == 0) || (releaseLocation.getY() == 0)) {
 			// check if the plugin was configured
-			player.chat("You were caught red-handed! The authorities would like to");
-			player.chat("imprison you, but a prison was not yet built, so you are");
-			player.chat("free to go. You won't be so lucky the next time!");
+			player.sendMessage("You were caught red-handed! The authorities would like to");
+			player.sendMessage("imprison you, but a prison was not yet built, so you are");
+			player.sendMessage("free to go. You won't be so lucky the next time!");
 			return;
 		}
-		
-		player.chat("You've been caught in your crimes! A prison sentence was passed to you!");
-		player.chat("You have been teleported to prison");
+
+		player.sendMessage("You've been caught in your crimes! A prison sentence was passed to you!");
+		player.sendMessage("You have been teleported to prison");
 		player.teleport(timeoutLocation);
 		releaseTask task = new releaseTask();
 		task.player = player;
@@ -109,7 +118,7 @@ class releaseTask extends BukkitRunnable {
 	public void run() {
 		PlayerTeleportEvent.getHandlerList().unregister(illegalTeleportListener);
 		HandlerList.unregisterAll(this.illegalTeleportListener);
-		player.chat("You have been released from prison");
+		player.sendMessage("You have been released from prison");
 		player.teleport(releaseLocation);
 	}
 }
@@ -141,7 +150,7 @@ class KidsTimeoutEntityListener implements Listener {
 					case SNOWMAN:
 					case IRON_GOLEM:
 					case MUSHROOM_COW:
-						 killer.chat(killer.getName() + " killed a " + entity.getType().getName() + "!");
+						 killer.sendMessage(killer.getName() + " killed a " + entity.getType().getName() + "!");
 						 plugin.doTimeout(killer);
 						 return;
 					default:
@@ -166,10 +175,6 @@ class KidsReleaseTimeoutCommand implements CommandExecutor {
 		}
 
 		Player player = (Player) sender;
-		if (!player.hasPermission("kidstimeout")) {
-			player.chat("You do not have the permissions to do that");
-			return false;
-		}
 		plugin.setReleaseLocation(player);
 		return true;
 	}
@@ -188,12 +193,29 @@ class KidsTimeoutTimeoutCommand implements CommandExecutor {
 		}
 
 		Player player = (Player) sender;
-		if (!player.hasPermission("kidstimeout")) {
-			player.chat("You do not have the permissions to do that");
-			return false;
-		}
 		plugin.setTimeoutLocation(player);
 		return true;
+	}
+}
+
+class KidsTimeoutTimeoutLengthCommand implements CommandExecutor {
+	private final KidsTimeout plugin;
+
+	public KidsTimeoutTimeoutLengthCommand(KidsTimeout plugin) {
+		this.plugin = plugin;
+	}
+	
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
+		if (split.length == 1) {
+			plugin.setTimeoutLength(Long.parseLong(split[0]));
+			sender.sendMessage("Time-out length is " + plugin.getConfig().getLong("timeoutlength") + " seconds");
+			return true;
+		} else if (split.length == 0) {
+			sender.sendMessage("Time-out length is " + plugin.getConfig().getLong("timeoutlength") + " seconds");
+			return true;
+		}
+		
+		return false;
 	}
 }
 
@@ -208,7 +230,7 @@ class KidsTimeoutTeleportListener implements Listener {
 			return;
 		if (player.hasPermission("kidstimeout"))
 			return;
-		player.chat("Your attempt to escape prison was foiled!");
+		player.sendMessage("Your attempt to escape prison was foiled!");
 		event.setCancelled(true);
 		return;
 	}

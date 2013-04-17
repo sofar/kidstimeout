@@ -1,13 +1,22 @@
 name: KidsTimeout
 main: org.foo_projects.sofar.KidsTimeout.KidsTimeout
-version: 1
+version: 2
 commands:
     timeout:
         description: set the timeout location to the players current location
         usage: /timeout
+        permission: kidstimeout
+        permission-message: You do not have sufficient privileges to do that!
     release:
         description: set the release location to the players current location
         usage: /release
+        permission: kidstimeout
+        permission-message: You do not have sufficient privileges to do that!
+    timeoutlength:
+        description: set the timeout length in seconds
+        usage: /timeoutlength [seconds]
+        permission: kidstimeout
+        permission-message: You do not have sufficient privileges to do that!
 permissions:
     kidstimeout:
         description: Gives access to all KidsTimeout permissions, and allow teleporting out of the time out
