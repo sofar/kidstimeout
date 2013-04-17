@@ -3,8 +3,8 @@ main: org.foo_projects.sofar.KidsTimeout.KidsTimeout
 version: 2
 commands:
     timeout:
-        description: set the timeout location to the players current location
-        usage: /timeout
+        description: set the timeout location to the players current location, or, if passed a name as argument, puts that player into a timeout
+        usage: /timeout [playername]
         permission: kidstimeout
         permission-message: You do not have sufficient privileges to do that!
     release:
