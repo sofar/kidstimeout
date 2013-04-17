@@ -56,8 +56,6 @@ public final class KidsTimeout extends JavaPlugin {
 		world = this.getServer().getWorld(this.getConfig().getString("releaseworld"));
 		releaseVector = this.getConfig().getVector("releaselocation", releaseVector);
 		releaseLocation = releaseVector.toLocation(world);
-
-		getLogger().info("timeout enabled.");
 	}
 
 	public void setTimeoutLocation(final Player player) {
