@@ -165,6 +165,10 @@ class KidsReleaseTimeoutCommand implements CommandExecutor {
 		}
 
 		Player player = (Player) sender;
+		if (!player.hasPermission("kidstimeout")) {
+			player.chat("You do not have the permissions to do that");
+			return false;
+		}
 		plugin.setReleaseLocation(player);
 		return true;
 	}
@@ -178,13 +182,17 @@ class KidsTimeoutTimeoutCommand implements CommandExecutor {
 	}
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
-	if (!(sender instanceof Player)) {
-		return false;
-	}
+		if (!(sender instanceof Player)) {
+			return false;
+		}
 
-	Player player = (Player) sender;
-	plugin.setTimeoutLocation(player);
-	return true;
+		Player player = (Player) sender;
+		if (!player.hasPermission("kidstimeout")) {
+			player.chat("You do not have the permissions to do that");
+			return false;
+		}
+		plugin.setTimeoutLocation(player);
+		return true;
 	}
 }
 
@@ -196,6 +204,8 @@ class KidsTimeoutTeleportListener implements Listener {
 		if (!event.getPlayer().getName().equals(player.getName()))
 			return;
 		if (event.isCancelled() == true)
+			return;
+		if (player.hasPermission("kidstimeout"))
 			return;
 		player.chat("Your attempt to escape prison was foiled!");
 		event.setCancelled(true);

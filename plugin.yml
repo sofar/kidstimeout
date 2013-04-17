@@ -8,3 +8,7 @@ commands:
     release:
         description: set the release location to the players current location
         usage: /release
+permissions:
+    kidstimeout:
+        description: Gives access to all KidsTimeout permissions, and allow teleporting out of the time out
+        default: op
