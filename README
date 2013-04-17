@@ -22,7 +22,14 @@ above the fiery lava pits of the nether.
 The timeout location and release location can be set by visiting
 the location and typing /timeout and /release respectively. The
 plugin stores the world so you can have a timeout location in
-the nether and a release location in the normal world.
+the nether and a release location in the normal world. Only players
+with the "kidsplugin" permission (op by default only) can change
+the settings.
+
+The plugin attempts to prevent players from teleporting out of
+the time-out location. This may interfere with other plugins
+that can teleport - it's behavior is undefined because other
+plugins can undo the restriction.
 
 The plugins also has a timeout duration setting that defaults to
 240 seconds. All settings can also be modified by editing the
