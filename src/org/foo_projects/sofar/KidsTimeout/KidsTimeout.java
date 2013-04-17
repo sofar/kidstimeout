@@ -140,6 +140,7 @@ class KidsTimeoutEntityListener implements Listener {
 					case VILLAGER:
 					case SNOWMAN:
 					case IRON_GOLEM:
+					case MUSHROOM_COW:
 						 killer.chat(killer.getName() + " killed a " + entity.getType().getName() + "!");
 						 plugin.doTimeout(killer);
 						 return;
