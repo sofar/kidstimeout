@@ -168,15 +168,6 @@ class KidsReleaseTimeoutCommand implements CommandExecutor {
 	}
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
-		if (split.length == 1) {
-			Player baddie = plugin.getServer().getPlayer(split[0]);
-			if (baddie.getName().equals(split[0])) {
-				sender.sendMessage("No such player!");
-				return false;
-			}
-			plugin.doTimeout(baddie);
-			return true;
-		}
 		if (!(sender instanceof Player)) {
 			return false;
 		}
@@ -195,6 +186,16 @@ class KidsTimeoutTimeoutCommand implements CommandExecutor {
 	}
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
+		if (split.length == 1) {
+			Player baddie = plugin.getServer().getPlayer(split[0]);
+			if (baddie == null) {
+				sender.sendMessage("No such player!");
+				return false;
+			}
+			plugin.doTimeout(baddie);
+			return true;
+		}
+
 		if (!(sender instanceof Player)) {
 			return false;
 		}
