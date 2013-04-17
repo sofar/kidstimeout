@@ -95,8 +95,8 @@ public final class KidsTimeout extends JavaPlugin {
 			return;
 		}
 
-		player.sendMessage("You've been caught in your crimes! A prison sentence was passed to you!");
-		player.sendMessage("You have been teleported to prison");
+		player.sendMessage("You were caught red-handed! A prison sentence was passed to you!");
+		player.sendMessage("You have been put in prison. Think about what you did.");
 		player.teleport(timeoutLocation);
 		releaseTask task = new releaseTask();
 		task.player = player;

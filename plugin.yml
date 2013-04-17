@@ -1,6 +1,6 @@
 name: KidsTimeout
 main: org.foo_projects.sofar.KidsTimeout.KidsTimeout
-version: 2
+version: 3
 commands:
     timeout:
         description: set the timeout location to the players current location, or, if passed a name as argument, puts that player into a timeout
