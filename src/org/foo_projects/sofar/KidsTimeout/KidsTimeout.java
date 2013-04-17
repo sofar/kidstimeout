@@ -22,10 +22,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public final class KidsTimeout extends JavaPlugin {
@@ -91,6 +94,9 @@ public final class KidsTimeout extends JavaPlugin {
 		releaseTask task = new releaseTask();
 		task.player = player;
 		task.releaseLocation = releaseLocation;
+		task.illegalTeleportListener = new KidsTimeoutTeleportListener();
+		task.illegalTeleportListener.player = player;
+		getServer().getPluginManager().registerEvents(task.illegalTeleportListener, this);
 		task.runTaskLater(this, this.getConfig().getLong("timeoutlength") * 20);
 	}
 }
@@ -98,8 +104,11 @@ public final class KidsTimeout extends JavaPlugin {
 class releaseTask extends BukkitRunnable {
 	public Player player;
 	public Location releaseLocation;
+	public KidsTimeoutTeleportListener illegalTeleportListener;
 
 	public void run() {
+		PlayerTeleportEvent.getHandlerList().unregister(illegalTeleportListener);
+		HandlerList.unregisterAll(this.illegalTeleportListener);
 		player.chat("You have been released from prison");
 		player.teleport(releaseLocation);
 	}
@@ -151,15 +160,14 @@ class KidsReleaseTimeoutCommand implements CommandExecutor {
 	}
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
-	if (!(sender instanceof Player)) {
-		return false;
-	}
+		if (!(sender instanceof Player)) {
+			return false;
+		}
 
-	Player player = (Player) sender;
-	plugin.setReleaseLocation(player);
-	return true;
+		Player player = (Player) sender;
+		plugin.setReleaseLocation(player);
+		return true;
 	}
-
 }
 
 class KidsTimeoutTimeoutCommand implements CommandExecutor {
@@ -178,6 +186,20 @@ class KidsTimeoutTimeoutCommand implements CommandExecutor {
 	plugin.setTimeoutLocation(player);
 	return true;
 	}
+}
 
+class KidsTimeoutTeleportListener implements Listener {
+	public Player player;
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void illegalTeleport(PlayerTeleportEvent event) {
+		if (!event.getPlayer().getName().equals(player.getName()))
+			return;
+		if (event.isCancelled() == true)
+			return;
+		player.chat("Your attempt to escape prison was foiled!");
+		event.setCancelled(true);
+		return;
+	}
 }
 
