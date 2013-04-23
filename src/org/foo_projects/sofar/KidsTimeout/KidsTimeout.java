@@ -22,6 +22,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -130,13 +131,22 @@ class KidsTimeoutEntityListener implements Listener {
 
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
+		Player killer = null;
 		Entity entity = event.getEntity();
 		if (!(entity instanceof Player)) {
 			if (entity.getLastDamageCause() instanceof EntityDamageByEntityEvent) {
 				EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) entity.getLastDamageCause();
+				// track arrows back to the shooter
+				if (entityDamageByEntityEvent.getDamager() instanceof Projectile) {
+					Projectile projectile = (Projectile) entityDamageByEntityEvent.getDamager();
+					Entity shooter = projectile.getShooter();
+					if (shooter instanceof Player)
+						killer = (Player)shooter;
+				}
 				if (entityDamageByEntityEvent.getDamager() instanceof Player) {
-					Player killer = (Player)entityDamageByEntityEvent.getDamager();
- 
+					killer = (Player)entityDamageByEntityEvent.getDamager();
+				}
+				if (killer != null) {
 					switch (entity.getType()) {
 					case PIG:
 					case CHICKEN:
