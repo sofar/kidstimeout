@@ -12,6 +12,10 @@
 
 package org.foo_projects.sofar.KidsTimeout;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import org.bukkit.util.Vector;
@@ -38,11 +42,12 @@ public final class KidsTimeout extends JavaPlugin {
 	private Location releaseLocation;
 	private Vector timeoutVector;
 	private Vector releaseVector;
+	private List<String> moblist;
+	
+	public static final List<String> defaultMoblist = Collections.unmodifiableList(Arrays.asList("Cow", "Pig", "Sheep", "Chicken", "Villager", "VillagerGolem", "SnowMan", "MooshroomCow", "Wolf", "Ozelot"));
 
 	@Override
 	public void onEnable() {
-		World world;
-
 		getServer().getPluginManager().registerEvents(new KidsTimeoutEntityListener(this), this);
 
 		getCommand("timeout").setExecutor(new KidsTimeoutTimeoutCommand(this));
@@ -50,13 +55,23 @@ public final class KidsTimeout extends JavaPlugin {
 		getCommand("timeoutlength").setExecutor(new KidsTimeoutTimeoutLengthCommand(this));
 
 		this.saveDefaultConfig();
-		world = this.getServer().getWorld(this.getConfig().getString("timeoutworld"));
-		timeoutVector = this.getConfig().getVector("timeoutlocation", timeoutVector);
+		World world = getServer().getWorld(getConfig().getString("timeoutworld"));
+		timeoutVector = getConfig().getVector("timeoutlocation", timeoutVector);
 		timeoutLocation = timeoutVector.toLocation(world);
 
-		world = this.getServer().getWorld(this.getConfig().getString("releaseworld"));
-		releaseVector = this.getConfig().getVector("releaselocation", releaseVector);
+		world = getServer().getWorld(getConfig().getString("releaseworld"));
+		releaseVector = getConfig().getVector("releaselocation", releaseVector);
 		releaseLocation = releaseVector.toLocation(world);
+
+		moblist = getConfig().getStringList("mobs");
+		if (moblist.size() <= 0) {
+			getConfig().set("mobs", defaultMoblist);
+			saveConfig();
+		}
+		String msg = "KidsTimeout: tracking deaths for:";
+		for (String mob : moblist)
+			msg = msg + " " + mob;
+		getLogger().info(msg);
 	}
 
 	public void setTimeoutLocation(final Player player) {
@@ -64,9 +79,9 @@ public final class KidsTimeout extends JavaPlugin {
 		timeoutLocation = location;
 		player.sendMessage("timeout location set to: " + location.getX() + "," + location.getY() + "," + location.getZ());
 		Vector vector = location.toVector();
-		this.getConfig().set("timeoutlocation", vector);
-		this.getConfig().set("timeoutworld", location.getWorld().getName());
-		this.saveConfig();
+		getConfig().set("timeoutlocation", vector);
+		getConfig().set("timeoutworld", location.getWorld().getName());
+		saveConfig();
 	}
 
 	public void setReleaseLocation(final Player player) {
@@ -74,14 +89,23 @@ public final class KidsTimeout extends JavaPlugin {
 		releaseLocation = location;
 		player.sendMessage("release location set to: " + location.getX() + "," + location.getY() + "," + location.getZ());
 		Vector vector = location.toVector();
-		this.getConfig().set("releaselocation", vector);
-		this.getConfig().set("releaseworld", location.getWorld().getName());
-		this.saveConfig();
+		getConfig().set("releaselocation", vector);
+		getConfig().set("releaseworld", location.getWorld().getName());
+		saveConfig();
 	}
 
 	public void setTimeoutLength(final long length) {
-		this.getConfig().set("timeoutlength", length);
-		this.saveConfig();
+		getConfig().set("timeoutlength", length);
+		saveConfig();
+	}
+	
+	public boolean isMobKillPunishable(Entity entity) {
+		String name = entity.getType().getName();
+		for (String mob : moblist) {
+			if (mob.equals(name))
+				return true;
+		}
+		return false;
 	}
 
 	public void doTimeout(final Player player) {
@@ -105,7 +129,7 @@ public final class KidsTimeout extends JavaPlugin {
 		task.illegalTeleportListener = new KidsTimeoutTeleportListener();
 		task.illegalTeleportListener.player = player;
 		getServer().getPluginManager().registerEvents(task.illegalTeleportListener, this);
-		task.runTaskLater(this, this.getConfig().getLong("timeoutlength") * 20);
+		task.runTaskLater(this, getConfig().getLong("timeoutlength") * 20);
 	}
 }
 
@@ -116,7 +140,7 @@ class releaseTask extends BukkitRunnable {
 
 	public void run() {
 		PlayerTeleportEvent.getHandlerList().unregister(illegalTeleportListener);
-		HandlerList.unregisterAll(this.illegalTeleportListener);
+		HandlerList.unregisterAll(illegalTeleportListener);
 		player.sendMessage("You have been released from prison");
 		player.teleport(releaseLocation);
 	}
@@ -143,26 +167,12 @@ class KidsTimeoutEntityListener implements Listener {
 					if (shooter instanceof Player)
 						killer = (Player)shooter;
 				}
-				if (entityDamageByEntityEvent.getDamager() instanceof Player) {
+				if (entityDamageByEntityEvent.getDamager() instanceof Player)
 					killer = (Player)entityDamageByEntityEvent.getDamager();
-				}
 				if (killer != null) {
-					switch (entity.getType()) {
-					case PIG:
-					case CHICKEN:
-					case COW:
-					case SHEEP:
-					case OCELOT:
-					case WOLF:
-					case VILLAGER:
-					case SNOWMAN:
-					case IRON_GOLEM:
-					case MUSHROOM_COW:
-						 killer.sendMessage(killer.getName() + " killed a " + entity.getType().getName() + "!");
+					if (plugin.isMobKillPunishable(entity)) {
+						 plugin.getLogger().info("player " + killer.getName() + " killed a " + entity.getType().getName());
 						 plugin.doTimeout(killer);
-						 return;
-					default:
-						 return;
 					}
 				}
 			}
@@ -206,9 +216,8 @@ class KidsTimeoutTimeoutCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (!(sender instanceof Player)) {
+		if (!(sender instanceof Player))
 			return false;
-		}
 
 		Player player = (Player) sender;
 		plugin.setTimeoutLocation(player);

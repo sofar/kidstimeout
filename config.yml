@@ -11,3 +11,14 @@ releaselocation:
   z: 0.0
 releaseworld: world
 timeoutlength: 240
+mobs:
+- Cow
+- Pig
+- Sheep
+- Chicken
+- Villager
+- VillagerGolem
+- SnowMan
+- MooshroomCow
+- Wolf
+- Ozelot
