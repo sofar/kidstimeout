@@ -124,6 +124,8 @@ public final class KidsTimeout extends JavaPlugin {
 
 		player.sendMessage("You were caught red-handed! A prison sentence was passed to you!");
 		player.sendMessage("You have been put in prison. Think about what you did.");
+		// must exit any vehicle first, otherwise teleport fails
+		player.leaveVehicle();
 		player.teleport(timeoutLocation);
 		releaseTask task = new releaseTask();
 		task.player = player;

@@ -5,7 +5,9 @@ KidsTimeout - a Bukkit plugin
 KidsTimeout is a "kids timeout" plugin meant to keep your server
 "peaceful". It teleports players that kills peaceful entities to
 a "prison" or "timeout" location for a certain interval, and when
-the punishment is over, teleports them to a "release" location.
+the punishment is over, teleports them to a "release" location. If
+the player is in a vehicle, the player is removed from the vehicle
+first.
 
 The following mobs are considered "peaceful" for the purpose of
 this plugin:
