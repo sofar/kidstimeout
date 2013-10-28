@@ -22,4 +22,4 @@ mobs:
 - MooshroomCow
 - Wolf
 - Ozelot
-- HorseEntity
+- EntityHorse
