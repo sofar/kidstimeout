@@ -44,7 +44,7 @@ public final class KidsTimeout extends JavaPlugin {
 	private Vector releaseVector;
 	private List<String> moblist;
 	
-	public static final List<String> defaultMoblist = Collections.unmodifiableList(Arrays.asList("Cow", "Pig", "Sheep", "Chicken", "Villager", "VillagerGolem", "SnowMan", "MooshroomCow", "Wolf", "Ozelot"));
+	public static final List<String> defaultMoblist = Collections.unmodifiableList(Arrays.asList("Cow", "Pig", "Sheep", "Chicken", "Villager", "VillagerGolem", "SnowMan", "MooshroomCow", "Wolf", "Ozelot", "Horse"));
 
 	@Override
 	public void onEnable() {
@@ -109,9 +109,11 @@ public final class KidsTimeout extends JavaPlugin {
 	}
 
 	public void doTimeout(final Player player) {
-		if (player.hasPermission("kidstimeout") || player.isOp())
+		if (player.hasPermission("kidstimeout") || player.isOp()) {
+			player.sendMessage("You got away this time, next time they won't go so easy on you!");
 			return;
-
+		}
+			
 		if ((timeoutLocation.getY() == 0) || (releaseLocation.getY() == 0)) {
 			// check if the plugin was configured
 			player.sendMessage("You were caught red-handed! The authorities would like to");

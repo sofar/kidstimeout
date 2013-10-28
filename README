@@ -13,6 +13,7 @@ this plugin:
 - villagers, iron golems, snowmans
 - wolves, ocelots
 - mooshrooms
+- horses
 
 Damaging friendly mobs is still permitted and the plugin doesn't
 register it. You should probably create a jailbreak-proof holding
