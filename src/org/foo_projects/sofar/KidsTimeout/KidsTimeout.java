@@ -44,7 +44,7 @@ public final class KidsTimeout extends JavaPlugin {
 	private Vector releaseVector;
 	private List<String> moblist;
 	
-	public static final List<String> defaultMoblist = Collections.unmodifiableList(Arrays.asList("Cow", "Pig", "Sheep", "Chicken", "Villager", "VillagerGolem", "SnowMan", "MooshroomCow", "Wolf", "Ozelot", "Horse"));
+	public static final List<String> defaultMoblist = Collections.unmodifiableList(Arrays.asList("Cow", "Pig", "Sheep", "Chicken", "Villager", "VillagerGolem", "SnowMan", "MooshroomCow", "Wolf", "Ozelot", "HorseEntity"));
 
 	@Override
 	public void onEnable() {
