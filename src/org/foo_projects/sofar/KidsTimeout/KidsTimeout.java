@@ -100,7 +100,7 @@ public final class KidsTimeout extends JavaPlugin {
 	}
 	
 	public boolean isMobKillPunishable(Entity entity) {
-		String name = entity.getType().getName();
+		String name = entity.getType().name().toString();
 		for (String mob : moblist) {
 			if (mob.equals(name))
 				return true;
@@ -175,7 +175,7 @@ class KidsTimeoutEntityListener implements Listener {
 					killer = (Player)entityDamageByEntityEvent.getDamager();
 				if (killer != null) {
 					if (plugin.isMobKillPunishable(entity)) {
-						 plugin.getLogger().info("player " + killer.getName() + " killed a " + entity.getType().getName());
+						 plugin.getLogger().info("player " + killer.getName() + " killed a " + entity.getType().name().toString());
 						 plugin.doTimeout(killer);
 					}
 				}
