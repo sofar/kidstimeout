@@ -11,6 +11,7 @@ releaselocation:
   z: 0.0
 releaseworld: world
 timeoutlength: 240
+cancel: false
 mobs:
 - Cow
 - Pig
